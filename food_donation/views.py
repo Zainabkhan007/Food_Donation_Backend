@@ -16,7 +16,7 @@ def register(request):
         return Response({"error": "Email is required."}, status=status.HTTP_400_BAD_REQUEST)
 
     if UserRegisteration.objects.filter(email=email).exists():
-        return Response({"error": "Email already registered as staff."}, status=status.HTTP_400_BAD_REQUEST)
+        return Response({"error": "Email already registered as user."}, status=status.HTTP_400_BAD_REQUEST)
     
    
     serializer = UserRegisterationSerializer(data=request.data)
