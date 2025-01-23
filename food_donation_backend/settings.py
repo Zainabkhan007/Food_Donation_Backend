@@ -108,10 +108,10 @@ CORS_ALLOW_CREDENTIALS = True
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'postgres',
+        'NAME': 'railway',
         'USER': 'postgres',
-        'PASSWORD': 'password123',
-        'HOST': 'localhost',  # Replace with your PostgreSQL server's address if necessary
+        'PASSWORD': 'tKigqrNILoLJYFhnirCvmWuZJljeXCmM',
+        'HOST': 'postgres.railway.internal',  # Replace with your PostgreSQL server's address if necessary
         'PORT': '5432',          # Leave empty to use the default PostgreSQL port (usually 5432)
     }
 }
