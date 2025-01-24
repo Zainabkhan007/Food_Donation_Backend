@@ -33,3 +33,10 @@ class LoginSerializer(serializers.Serializer):
             raise serializers.ValidationError("Invalid email or password.")
         
         return attrs
+    
+class ContactSerializer(serializers.ModelSerializer):
+ 
+   
+    class Meta:
+        model = ContactUs
+        fields = '__all__'
