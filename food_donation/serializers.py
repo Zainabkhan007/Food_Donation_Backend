@@ -40,3 +40,8 @@ class ContactSerializer(serializers.ModelSerializer):
     class Meta:
         model = ContactUs
         fields = '__all__'
+
+class PaymentIntentSerializer(serializers.Serializer):
+    payment_id = serializers.CharField() 
+    amount = serializers.IntegerField()  
+    

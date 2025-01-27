@@ -163,3 +163,6 @@ STATICFILES_STORAGES =  "whitenoise.storage.CompressedManifestStaticFilesStorage
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+STRIPE_PUBLISHABLE_KEY='pk_test_51QlujIHVS02aEBOyD7m4hAMjmx1KgmTzalHKqkHdh0VqaU813nnHQUmbTSWs9ACyUKaMQ17YCA3Yv3nLvIRujQ8X00Z57pWmqm'
+STRIPE_SECRET_KEY='sk_test_51QlujIHVS02aEBOyIeiNlRnZZPDBr8KK2v8S5SDeXyzDTJiD5pAwERi4smwhQJbOhGNT7f7WKt458gC5KKKC3ZD700bKzCnp54'

@@ -3,9 +3,12 @@ from rest_framework.response import Response
 from rest_framework import status
 from .serializers import *
 from .models import *
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, APIView
 from rest_framework_simplejwt.tokens import RefreshToken
 from django.contrib.auth import authenticate
+from django.conf import settings
+import stripe
+stripe.api_key = settings.STRIPE_SECRET_KEY
 # Create your views here.
 @api_view(["POST"])
 def register(request):
@@ -78,7 +81,7 @@ def admin_login(request):
      if not user.is_staff:
         return Response({'detail': 'You do not have permission to access this resource.'}, status=status.HTTP_403_FORBIDDEN)
 
-     return Response({'detail': 'Login successful!'}, status=status.HTTP_200_OK)
+     return Response({'detail': 'Login successful!','username': user.username }, status=status.HTTP_200_OK)
 
 
 @api_view(["POST"])
@@ -96,9 +99,41 @@ def contactus(request):
 
 @api_view(["GET"])
 def get_all_msgs(request):
-      if request.method == "GET":
-        contact_entries = ContactUs.objects.all()
-        messages = [{"message": entry.message} for entry in contact_entries]
-        
-        return Response(messages, status=status.HTTP_200_OK)
+ 
+   if request.method == "GET":
+        contact = ContactUs.objects.all()
+        serializer = ContactSerializer(contact,many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
+
+class CreatePaymentIntentView(APIView):
+    def post(self, request, *args, **kwargs):
+     
+        serializer = PaymentIntentSerializer(data=request.data)
+        if serializer.is_valid():
+            payment_id = serializer.validated_data['payment_id']
+            amount = serializer.validated_data['amount']
+       
+
+            try:
+            
+                payment_intent = stripe.PaymentIntent.create(
+                    amount=amount,
+                    currency="eur",
+                    payment_method=payment_id,
+                    confirmation_method='manual',
+                    confirm=True, 
+                )
+
+                
+                return Response(
+                    {'clientSecret': payment_intent.client_secret},
+                    status=status.HTTP_200_OK
+                )
+            except stripe.error.CardError as e:
+                # Handle card errors
+                return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+            except Exception as e:
+                return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
