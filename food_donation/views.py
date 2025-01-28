@@ -123,6 +123,7 @@ class CreatePaymentIntentView(APIView):
                     payment_method=payment_id,
                     confirmation_method='manual',
                     confirm=True, 
+                    return_url = f"{request.scheme}://{request.get_host()}/payment-success/"
                 )
 
                 
